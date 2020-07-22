@@ -84,3 +84,37 @@ export const getExaCustomerList = (params) => {
         params
     })
 }
+
+export const getDeviceFile = (data) => {
+    // eslint-disable-next-line no-debugger
+    debugger
+    return service({
+        url: "/device/getDeviceFile",
+        method: 'post',
+        data
+    })
+}
+
+export const updateDevice = (data) => {
+    // eslint-disable-next-line no-
+    return service({
+        url: "/device/updateDevice",
+        method: 'post',
+        data
+    })
+}
+
+export const getNodes = () => {
+    // eslint-disable-next-line no-
+    return service({
+        url: "/device/getNodes",
+        method: 'post',
+    })
+}
+export const getDeviceDetails = () => {
+    // eslint-disable-next-line no-
+    return service({
+        url: "/device/getDeviceDetails",
+        method: 'post',
+    })
+}

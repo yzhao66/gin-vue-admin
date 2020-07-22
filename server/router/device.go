@@ -12,7 +12,9 @@ func InitDeviceRouter(Router *gin.RouterGroup) {
 		Use(middleware.CasbinHandler()).
 		Use(middleware.OperationRecord())
 	{
-		DeviceRouter.GET("getDevice", v1.GetDevice)   // 获取设备
+		DeviceRouter.POST("getDeviceFile", v1.GetDeviceFile)   // 获取设备
 		DeviceRouter.POST("updateDevice",v1.UpdateDevice) //更新设备
+		DeviceRouter.POST("getNodes",v1.GetNodes)
+		DeviceRouter.POST("getDeviceDetails",v1.GetDeviceDetails)
 	}
 }

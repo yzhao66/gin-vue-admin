@@ -14,12 +14,13 @@ import (
 
 func Routers() *gin.Engine {
 	var Router = gin.Default()
-	// Router.Use(middleware.LoadTls())  // 打开就能玩https了
+	//Router.Use(middleware.LoadTls())  // 打开就能玩https了
 	global.GVA_LOG.Debug("use middleware logger")
 	// 跨域
 	Router.Use(middleware.Cors())
 	global.GVA_LOG.Debug("use middleware cors")
 	Router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	Router.GET("/")
 	global.GVA_LOG.Debug("register swagger handler")
 	// 方便统一添加路由组前缀 多服务器上线使用
 	ApiGroup := Router.Group("")
@@ -27,6 +28,7 @@ func Routers() *gin.Engine {
 	router.InitBaseRouter(ApiGroup)                  // 注册基础功能路由 不做鉴权
 	router.InitMenuRouter(ApiGroup)                  // 注册menu路由
 	router.InitAuthorityRouter(ApiGroup)             // 注册角色路由
+	router.InitDeviceRouter(ApiGroup)				 // 注册设备路由
 	router.InitApiRouter(ApiGroup)                   // 注册功能api路由
 	router.InitFileUploadAndDownloadRouter(ApiGroup) // 文件上传下载功能路由
 	router.InitWorkflowRouter(ApiGroup)              // 工作流相关路由

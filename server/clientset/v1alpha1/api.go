@@ -1,7 +1,7 @@
 package v1alpha1
 
 import (
-	"github.com/martin-helmich/kubernetes-crd-example/api/types/v1alpha1"
+	"gin-vue-admin/api/types/v1alpha1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
 	"k8s.io/client-go/kubernetes/scheme"
@@ -9,7 +9,7 @@ import (
 )
 
 type ExampleV1Alpha1Interface interface {
-	Projects(namespace string) ProjectInterface
+	/*Projects(namespace string) ProjectInterface*/
 
 	Devices(namespace string) DeviceInterface
 }
@@ -33,12 +33,12 @@ func NewForConfig(c *rest.Config) (*ExampleV1Alpha1Client, error) {
 	return &ExampleV1Alpha1Client{restClient: client}, nil
 }
 
-func (c *ExampleV1Alpha1Client) Projects(namespace string) ProjectInterface {
+/*func (c *ExampleV1Alpha1Client) Projects(namespace string) DeviceInterface {
 	return &projectClient{
 		restClient: c.restClient,
 		ns:         namespace,
 	}
-}
+}*/
 func (c *ExampleV1Alpha1Client) Devices(namespace string) DeviceInterface {
 	return &deviceClient{
 		restClient: c.restClient,

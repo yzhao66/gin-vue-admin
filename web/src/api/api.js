@@ -63,6 +63,8 @@ export const getApiById = (data) => {
 // @Success 200 {string} json "{"success":true,"data":{},"msg":"更新成功"}"
 // @Router /api/updateApi [post]
 export const updateApi = (data) => {
+    // eslint-disable-next-line no-
+
     return service({
         url: "/api/updateApi",
         method: 'post',

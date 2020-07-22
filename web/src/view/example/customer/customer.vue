@@ -24,6 +24,7 @@
       <el-table-column label="接入人ID" prop="sysUserId" width="120"></el-table-column>
       <el-table-column label="按钮组" min-width="160">
         <template slot-scope="scope">
+          <el-button @click="getDeviceInfo()" size="big" type="text">test</el-button>
           <el-button @click="updateCustomer(scope.row)" size="small" type="text">变更</el-button>
           <el-popover placement="top" width="160" v-model="scope.row.visible">
             <p>确定要删除吗？</p>
@@ -48,14 +49,20 @@
       layout="total, sizes, prev, pager, next, jumper"
     ></el-pagination>
 
+
+
     <el-dialog :before-close="closeDialog" :visible.sync="dialogFormVisible" title="客户">
-      <el-form :inline="true" :model="form" label-width="80px">
+      <el-form :inline="true" :model="form1" label-width="80px">
         <el-form-item label="客户名">
-          <el-input autocomplete="off" v-model="form.customerName"></el-input>
+          <el-input autocomplete="off" v-model="form1.customerName"></el-input>
         </el-form-item>
         <el-form-item label="客户电话">
-          <el-input autocomplete="off" v-model="form.customerPhoneData"></el-input>
+          <el-input autocomplete="off" v-model="form1.customerPhoneData"></el-input>
         </el-form-item>
+
+
+
+
       </el-form>
       <div class="dialog-footer" slot="footer">
         <el-button @click="closeDialog">取 消</el-button>
@@ -63,6 +70,53 @@
       </div>
     </el-dialog>
     <div class="tips"> 在资源权限中将此角色的资源权限清空 或者不包含创建者的角色 即可屏蔽此客户资源的显示</div>
+
+
+
+
+    <el-form :model="form" label-width="80px" ref="form">
+
+      <el-row>
+        <el-col :span="3"><label for="">红灯</label></el-col>
+        <el-col :span="10">
+          <el-switch v-model="form.red"></el-switch>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="3"><label for="">绿灯</label></el-col>
+        <el-col :span="10">
+          <el-switch v-model="form.green"></el-switch>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="3"><label for="">黄灯</label></el-col>
+        <el-col :span="10">
+          <el-switch v-model="form.yellow"></el-switch>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="3" ><label for="">device文件</label></el-col>
+        <el-col :span="10"  >
+          <el-input type="textarea" v-model="form.desc"></el-input>
+        </el-col>
+      </el-row>
+
+
+
+      <el-row type="flex" justify="center">
+        <el-col :span="13">
+          <el-button @click="getDeviceInfo()" size="small" type="text">ccccc</el-button>
+          <!--                      <el-button @click="onSubmit" type="primary">立即创建</el-button>-->
+          <el-button>取消</el-button>
+        </el-col>
+
+      </el-row>
+
+    </el-form>
+
+
+
+
   </div>
 </template>
 
@@ -72,7 +126,8 @@ import {
   updateExaCustomer,
   deleteExaCustomer,
   getExaCustomer,
-  getExaCustomerList
+  getExaCustomerList,
+  getDeviceFile
 } from "@/api/customer";
 import { formatTimeToStr } from "@/utils/data";
 import infoList from "@/components/mixins/infoList";
@@ -86,9 +141,15 @@ export default {
       dialogFormVisible: false,
       visible: false,
       type: "",
-      form: {
+      form1: {
         customerName: "",
         customerPhoneData: ""
+      },
+      form: {
+        red: "",
+        green: "",
+        yellow: "",
+        desc: ""
       }
     };
   },
@@ -103,17 +164,46 @@ export default {
     }
   },
   methods: {
+    async getDeviceInfo() {
+      const res = await getDeviceFile();
+      this.type = "update";
+      if (res.code == 0) {
+        var desc = res.data[0]
+
+
+        var obj = res.data[0];
+        var colors = obj.status.twins
+        var color_red = colors[0]
+        this.form.red=colors[0]
+        var color_green = colors[1]
+        this.form.green=colors[1]
+        var color_yellow = colors[2]
+        this.form.yellow=colors[2]
+
+        var strOfDevice = JSON.stringify(color_red.desired.value + color_green.desired.value + color_yellow.desired.value )
+        this.form.desc = strOfDevice  + JSON.stringify(desc);
+
+        // var red= ""
+        // var green = ""
+        // var yellow = ""
+
+      }
+    },
     async updateCustomer(row) {
+      // eslint-disable-next-line no-debugger
+      debugger
       const res = await getExaCustomer({ ID: row.ID });
       this.type = "update";
       if (res.code == 0) {
-        this.form = res.data.customer;
+        // eslint-disable-next-line no-debugger
+        debugger
+        this.form1 = res.data.customer;
         this.dialogFormVisible = true;
       }
     },
     closeDialog() {
       this.dialogFormVisible = false;
-      this.form = {
+      this.form1 = {
         customerName: "",
         customerPhoneData: ""
       };
@@ -133,13 +223,13 @@ export default {
       let res;
       switch (this.type) {
         case "create":
-          res = await createExaCustomer(this.form);
+          res = await createExaCustomer(this.form1);
           break;
         case "update":
-          res = await updateExaCustomer(this.form);
+          res = await updateExaCustomer(this.form1);
           break;
         default:
-          res = await createExaCustomer(this.form);
+          res = await createExaCustomer(this.form1);
           break;
       }
 

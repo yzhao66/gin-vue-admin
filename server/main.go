@@ -4,6 +4,8 @@ import (
 	"gin-vue-admin/core"
 	"gin-vue-admin/global"
 	"gin-vue-admin/initialize"
+	"github.com/gin-gonic/gin"
+
 	//"runtime"
 )
 
@@ -15,6 +17,7 @@ import (
 // @name x-token
 // @BasePath /
 func main() {
+	gin.Default()
 	switch global.GVA_CONFIG.System.DbType {
 	case "mysql":
 		initialize.Mysql()
@@ -26,6 +29,6 @@ func main() {
 	initialize.DBTables()
 	// 程序结束前关闭数据库链接
 	defer global.GVA_DB.Close()
-
 	core.RunWindowsServer()
+
 }

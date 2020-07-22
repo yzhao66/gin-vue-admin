@@ -8,6 +8,7 @@ import service from '@/utils/request'
 // }
 // @Router /authority/getAuthorityList [post]
 export const getAuthorityList = (data) => {
+    // eslint-disable-next-line no-
     return service({
         url: "/authority/getAuthorityList",
         method: 'post',

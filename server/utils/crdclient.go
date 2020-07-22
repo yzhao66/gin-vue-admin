@@ -1,10 +1,9 @@
 package utils
 
 import (
-	"github.com/martin-helmich/kubernetes-crd-example/api/types/v1alpha1"
+	"gin-vue-admin/api/types/v1alpha1"
 	"k8s.io/client-go/kubernetes/scheme"
 	"log"
-
 
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"

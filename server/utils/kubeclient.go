@@ -6,7 +6,7 @@ import (
 )
 
 // replace this with the K8s Master IP
-var KubeMaster = "http://10.0.20.82:8080"
+var KubeMaster = "http://10.0.20.113:8080"
 var Kubeconfig = ""
 var KubeQPS = float32(5.000000)
 var KubeBurst = 10
