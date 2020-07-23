@@ -13,4 +13,5 @@ type Device struct {
 	/*DeviceSpec string  `json:"DeviceSpec" form:"DeviceSpec" gorm:"comment:'管理角色ID'"`
 	Status v1alpha1.DeviceStatus     `json:"DeviceStatus" form:"DeviceStatus" gorm:"comment:'管理角色ID'"`*/
 	CreateTime v1.Time  `json:"CreateTime" form:"CreateTime" gorm:"comment:'管理角色ID'"`
+	NameSpace string `json:"NameSpace" form:"NameSpace" gorm:"comment:'管理角色ID'"`
 }

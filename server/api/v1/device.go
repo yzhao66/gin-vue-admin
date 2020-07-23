@@ -11,6 +11,7 @@ import (
 	resp "gin-vue-admin/model/response"
 	"gin-vue-admin/utils"
 	"github.com/gin-gonic/gin"
+	"github.com/robfig/cron/v3"
 	"io/ioutil"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
@@ -33,7 +34,7 @@ type DeviceStatus struct {
 }
 
 var namespace = "default"
-var deviceID = "traffic-light-instance-01"
+var deviceID = ""
 
 func GetDeviceFile(c *gin.Context) {
 	var result v1alpha1.Device
@@ -88,6 +89,7 @@ func GetDeviceDetails(c *gin.Context) {
 		device.DeviceName = d[i].ObjectMeta.Name
 		device.NodeName = d[i].Spec.NodeSelector.NodeSelectorTerms[0].MatchExpressions[0].Values[0]
 		device.CreateTime = d[i].CreationTimestamp
+		device.NameSpace=d[i].ObjectMeta.Namespace
 		deviceList = append(deviceList, device)
 
 	}
@@ -109,12 +111,17 @@ func UpdateDevice(c *gin.Context) {
 	kubeConfig, err := utils.KubeConfig()
 	kubeclientset, err := utils.NewCRDClient(kubeConfig)
 	params, err := ioutil.ReadAll(c.Request.Body)
-	status := build(params)
+	detailDevice :=DeviceDetails{}
+	err = json.Unmarshal(params, &detailDevice)
+	log.Println(err)
+	status := build(params,detailDevice)
 	deviceStatus := &DeviceStatus{Status: status}
 	body, err := json.Marshal(deviceStatus)
 	if err != nil {
 		log.Printf("Failed to marshal device status %v", deviceStatus)
 	}
+	deviceID=detailDevice.DeiveName
+	namespace=detailDevice.NameSpace
 	result := kubeclientset.Patch(utils.MergePatchType).Namespace(namespace).Resource(utils.ResourceTypeDevices).Name(deviceID).Body(body).Do()
 	if result.Error() != nil {
 		log.Printf("Failed to patch device status %v of device %v in namespace %v \n error:%+v", deviceStatus, deviceID, namespace, result.Error())
@@ -122,14 +129,14 @@ func UpdateDevice(c *gin.Context) {
 		response.OkWithMessage("更新成功", c)
 	}
 }
-func build(params []byte) v1alpha1.DeviceStatus {
-	var redValue string
+func build(params []byte, device DeviceDetails) v1alpha1.DeviceStatus {
+	/*var redValue string
 	var greenValue string
-	var yellowValue string
+	var yellowValue string*/
 	metadata := map[string]string{"timestamp": strconv.FormatInt(time.Now().Unix()/1e6, 10),
 		"type": "string",
 	}
-	jsonData := JsonData{}
+/*	jsonData := JsonData{}
 	err := json.Unmarshal(params, &jsonData)
 	log.Println(err)
 
@@ -144,10 +151,21 @@ func build(params []byte) v1alpha1.DeviceStatus {
 		if jsonData.Data[i].Color == "yellow" {
 			yellowValue = jsonData.Data[i].Status
 		}
-	}
-	twins := []v1alpha1.Twin{{PropertyName: "red", Desired: v1alpha1.TwinProperty{Value: redValue, Metadata: metadata}, Reported: v1alpha1.TwinProperty{Value: redValue, Metadata: metadata}}, {PropertyName: "green", Desired: v1alpha1.TwinProperty{Value: greenValue, Metadata: metadata}, Reported: v1alpha1.TwinProperty{Value: greenValue, Metadata: metadata}}, {PropertyName: "yellow", Desired: v1alpha1.TwinProperty{Value: yellowValue, Metadata: metadata}, Reported: v1alpha1.TwinProperty{Value: yellowValue, Metadata: metadata}}}
+	}*/
+
+	twins := []v1alpha1.Twin{{PropertyName: "red", Desired: v1alpha1.TwinProperty{Value: device.Red, Metadata: metadata}, Reported: v1alpha1.TwinProperty{Value: device.Red, Metadata: metadata}}, {PropertyName: "green", Desired: v1alpha1.TwinProperty{Value: device.Green, Metadata: metadata}, Reported: v1alpha1.TwinProperty{Value: device.Green, Metadata: metadata}}, {PropertyName: "yellow", Desired: v1alpha1.TwinProperty{Value: device.Yellow, Metadata: metadata}, Reported: v1alpha1.TwinProperty{Value: device.Yellow, Metadata: metadata}}}
 	devicestatus := v1alpha1.DeviceStatus{Twins: twins}
 	return devicestatus
+}
+
+type DeviceDetails struct {
+	Red  string `json:"red"`
+	Yellow string `json:"yellow"`
+	Green string `json:"green"`
+	DeiveName string `json:"deiveName"`
+	DeviceType string `json:"deviceType"`
+	NodeName string `json:"nodeName"`
+	NameSpace string `json:"nameSpace"`
 }
 
 func GetNodes(c *gin.Context) {
@@ -177,4 +195,7 @@ func GetNodes(c *gin.Context) {
 		}, c)
 	}
 
+}
+func GetNode (c *gin.Context) {
+	c = cron.New(cron.WithSeconds())
 }

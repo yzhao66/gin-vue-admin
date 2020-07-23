@@ -11,31 +11,34 @@
                     style="width: 100%"
                     tooltip-effect="dark"
             >
-                <el-table-column label="设备名称" prop="DeviceName" v-model="form3.DeviceName" width="120"></el-table-column>
-                <el-table-column label="设备类型" prop="DeviceType" v-model="form3.DeviceType" width="120"></el-table-column>
-                <el-table-column label="节点名称" prop="NodeName" v-model="form3.NodeName"  width="120"></el-table-column>
+                <el-table-column label="设备名称" prop="DeviceName" v-model="form3.DeviceName"
+                                 width="120"></el-table-column>
+                <el-table-column label="设备类型" prop="DeviceType" v-model="form3.DeviceType"
+                                 width="120"></el-table-column>
+                <el-table-column label="设备类型" prop="NodeName" v-model="form3.NodeName" width="120"></el-table-column>
                 <!--<el-table-column label="设备描述" prop="DeviceSpec" width="120"></el-table-column>
                 <el-table-column label="设备状态" prop="Status" width="120"></el-table-column>-->
                 <el-table-column label="创建时间" prop="CreateTime" width="120"></el-table-column>
+                <el-table-column label="命名空间" prop="NameSpace" width="120"></el-table-column>
                 <el-table-column label="按钮组" min-width="160">
                     <template slot-scope="scope">
                         <el-button @click="getDeviceFile(scope.row)" size="small" type="text">获取设备文件</el-button>
                     </template>
                 </el-table-column>
-              <!--  <el-table-column label="按钮组" min-width="160">
-                    <template slot-scope="scope">
-                        &lt;!&ndash;<el-button @click="getDeviceFile()" size="big" type="text">test</el-button>&ndash;&gt;
-                        <el-button @click="getDeviceFile(scope.row)" size="small" type="text">变更</el-button>
-                        <el-popover placement="top" width="160" v-model="scope.row.visible">
-                            <p>确定要删除吗？</p>
-                            <div style="text-align: right; margin: 0">
-                                <el-button size="mini" type="text" @click="scope.row.visible = false">取消</el-button>
-                                <el-button type="primary" size="mini" @click="deleteCustomer(scope.row)">确定</el-button>
-                            </div>
-                            <el-button type="danger" icon="el-icon-delete" size="mini" slot="reference">删除</el-button>
-                        </el-popover>
-                    </template>
-                </el-table-column>-->
+                <!--  <el-table-column label="按钮组" min-width="160">
+                      <template slot-scope="scope">
+                          &lt;!&ndash;<el-button @click="getDeviceFile()" size="big" type="text">test</el-button>&ndash;&gt;
+                          <el-button @click="getDeviceFile(scope.row)" size="small" type="text">变更</el-button>
+                          <el-popover placement="top" width="160" v-model="scope.row.visible">
+                              <p>确定要删除吗？</p>
+                              <div style="text-align: right; margin: 0">
+                                  <el-button size="mini" type="text" @click="scope.row.visible = false">取消</el-button>
+                                  <el-button type="primary" size="mini" @click="deleteCustomer(scope.row)">确定</el-button>
+                              </div>
+                              <el-button type="danger" icon="el-icon-delete" size="mini" slot="reference">删除</el-button>
+                          </el-popover>
+                      </template>
+                  </el-table-column>-->
             </el-table>
         </el-form>
         <el-form :inline="true" :model="form" label-width="80px" v-show="showRentPrise">
@@ -64,6 +67,30 @@
                     <el-input type="textarea" v-model="form.desc"></el-input>
                 </el-col>
             </el-row>
+            <el-row v-show=false>
+                <el-col :span="3"><label for="">设备名称</label></el-col>
+                <el-col :span="10">
+                    <el-input type="textarea" v-model="form.DeviceName"></el-input>
+                </el-col>
+            </el-row>
+            <el-row v-show=false>
+                <el-col :span="3"><label for="">设备类型</label></el-col>
+                <el-col :span="10">
+                    <el-input type="textarea" v-model="form.DeviceType"></el-input>
+                </el-col>
+            </el-row>
+            <el-row v-show=false>
+                <el-col :span="3"><label for="">节点名称</label></el-col>
+                <el-col :span="10">
+                    <el-input type="textarea" v-model="form.NodeName"></el-input>
+                </el-col>
+            </el-row>
+            <el-row v-show=false>
+                <el-col :span="3"><label for="">命名空间</label></el-col>
+                <el-col :span="10">
+                    <el-input type="textarea" v-model="form.NameSpace"></el-input>
+                </el-col>
+            </el-row>
 
             <el-row type="flex" justify="center">
                 <el-col :span="13">
@@ -72,6 +99,9 @@
                 </el-col>
 
             </el-row>
+            <!--  <template slot-scope="scope">
+                  <el-button @click="getDeviceFile(scope.row)" size="small" type="text">获取设备文件</el-button>
+              </template>-->
         </el-form>
         <el-form :inline="true" :model="form1" label-width="80px" v-if="showPrise">
             <el-row>
@@ -87,13 +117,13 @@
                     <el-input type="textarea" v-model="form1.desc"></el-input>
                 </el-col>
             </el-row>
-            <el-row type="flex" justify="center">
+           <!-- <el-row type="flex" justify="center">
                 <el-col :span="13">
-                    <el-button @click="onSubmit" type="primary">提交</el-button>
+                    <el-button @click="onSubmit1" type="primary">提交</el-button>
                     <el-button>取消</el-button>
                 </el-col>
 
-            </el-row>
+            </el-row>-->
         </el-form>
 
 
@@ -125,13 +155,17 @@
                     red: "",
                     green: "",
                     yellow: "",
-                    desc: ""
+                    desc: "",
+                    DeviceName: "",
+                    DeviceType: "",
+                    NodeName: "",
+                    NameSpace:""
                 },
                 form3: {
                     DeviceName: "",
                     DeviceType: "",
                     NodeName: "",
-                    
+
                 },
                 showRentPrise: false,
                 showPrise: false
@@ -141,23 +175,29 @@
             // eslint-disable-next-line no-,no-unused-vars
             async getDeviceFile(row) {
                 // eslint-disable-next-line no-debugger
-                debugger
                 const res = await getDeviceFile({
                     DeviceName: row.DeviceName,
                     DeviceType: row.DeviceType,
                     NodeName: row.NodeName
                 });
+                this.form.DeviceName = row.DeviceName
+                this.form.DeviceType = row.DeviceType
+                this.form.NodeName = row.NodeName
+                this.form.NameSpace = row.NameSpace
                 // eslint-disable-next-line no-debugger
                 if (row.DeviceType == "temperature-model") {
                     this.showPrise = true
+                }else {
+                    this.showRentPrise=false
                 }
                 if (row.DeviceType == "traffic-light") {
                     this.showRentPrise = true
+                }else {
+                    this.showRentPrise=false
                 }
                 var desc = res.data
                 if (res.code == 0 && row.DeviceType == "traffic-light") {
                     // eslint-disable-next-line no-debugger
-                    debugger
 
                     // eslint-disable-next-line no-
 
@@ -182,7 +222,6 @@
                         this.form.yellow = false
                     }
                     // eslint-disable-next-line no-debugger
-                    debugger
 
                     var strOfDevice = JSON.stringify(color_red.desired.value + color_yellow.desired.value + color_green.desired.value)
                     this.form.desc = strOfDevice + JSON.stringify(desc);
@@ -191,26 +230,26 @@
                     // var yellow = ""
                 } else if (res.code == 0 && row.DeviceType == "temperature-model") {
                     // eslint-disable-next-line no-redeclare,no-debugger
-                    debugger
                     // eslint-disable-next-line no-redeclare
                     var obj = res.data.status.twins;
                     this.form1.temp = obj[0].reported.value
                     // eslint-disable-next-line no-redeclare
                     var strOfDevice = JSON.stringify(obj[0].desired.value)
-                    this.form1.desc=strOfDevice+JSON.stringify(desc)
+                    this.form1.desc = strOfDevice + JSON.stringify(desc)
                 }
             },
             async onSubmit() {
-
+                // eslint-disable-next-line no-debugger
                 var redValue
                 var greenValue
                 var yellowValue
                 // eslint-disable-next-line no-undef
-                var deiveName=this.form3.DeviceName
+                var deiveName = this.form.DeviceName
                 // eslint-disable-next-line no-undef
-                var deviceType=this.form3.DeviceType
+                var deviceType = this.form.DeviceType
                 // eslint-disable-next-line no-undef
-                var nodeName=this.form3.NodeName
+                var nodeName = this.form.NodeName
+                var nameSpace = this.form.NameSpace
                 if (this.form.red == true) {
                     redValue = "ON"
                 } else {
@@ -227,7 +266,7 @@
                     yellowValue = "OFF"
                 }
 
-                var redobj = {
+                /*var redobj = {
                     "name": "red",
                     "value": redValue
                 }
@@ -240,14 +279,15 @@
                 var yelloobj = {
                     "name": "yellow",
                     "value": yellowValue
-                }
+                }*/
                 var Data = {
-                    "Data": [redobj,
-                        greenobj,
-                        yelloobj],
-                    "deiveName":deiveName,
-                    "deviceType":deviceType,
-                    "nodeName":nodeName
+                    "red":redValue,
+                    "yellow":yellowValue,
+                    "green":greenValue,
+                    "deiveName": deiveName,
+                    "deviceType": deviceType,
+                    "nodeName": nodeName,
+                    "nameSpace": nameSpace
 
                 }
 

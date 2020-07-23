@@ -87,7 +87,6 @@ export const getExaCustomerList = (params) => {
 
 export const getDeviceFile = (data) => {
     // eslint-disable-next-line no-debugger
-    debugger
     return service({
         url: "/device/getDeviceFile",
         method: 'post',
@@ -96,7 +95,7 @@ export const getDeviceFile = (data) => {
 }
 
 export const updateDevice = (data) => {
-    // eslint-disable-next-line no-
+    // eslint-disable-next-line no-,no-debugger
     return service({
         url: "/device/updateDevice",
         method: 'post',

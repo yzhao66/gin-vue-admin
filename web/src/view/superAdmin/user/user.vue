@@ -96,6 +96,7 @@
 
 <script>
 // 获取列表内容封装在mixins内部  getTableData方法 初始化已封装完成
+// eslint-disable-next-line no-undef
 const path = process.env.VUE_APP_BASE_API;
 import {
   getUserList,
