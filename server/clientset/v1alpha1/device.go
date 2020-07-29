@@ -35,7 +35,10 @@ func (d deviceClient) List(opts metav1.ListOptions) (*v1alpha1.DeviceList, error
 }
 
 func (d deviceClient) Get(name string, options metav1.GetOptions) (*v1alpha1.Device, error) {
-	panic("implement me")
+	result :=v1alpha1.Device{}
+	err :=d.restClient.Get().Namespace(d.ns).Resource("devices").Name(name).Do().Into(&result)
+
+	return &result,err
 }
 
 func (d deviceClient) Create(device *v1alpha1.Device) (*v1alpha1.Device, error) {

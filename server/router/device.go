@@ -16,5 +16,6 @@ func InitDeviceRouter(Router *gin.RouterGroup) {
 		DeviceRouter.POST("updateDevice",v1.UpdateDevice) //更新设备
 		DeviceRouter.POST("getNodes",v1.GetNodes)
 		DeviceRouter.POST("getDeviceDetails",v1.GetDeviceDetails)
+		DeviceRouter.POST("getCronList",v1.GetCronLists)
 	}
 }

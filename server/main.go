@@ -1,12 +1,13 @@
 package main
 
 import (
+	"fmt"
+	v1 "gin-vue-admin/api/v1"
 	"gin-vue-admin/core"
 	"gin-vue-admin/global"
 	"gin-vue-admin/initialize"
 	"github.com/gin-gonic/gin"
-
-	//"runtime"
+	"reflect"
 )
 
 // @title Swagger Example API
@@ -28,7 +29,14 @@ func main() {
 	}
 	initialize.DBTables()
 	// 程序结束前关闭数据库链接
+	initialize.InitCron();
 	defer global.GVA_DB.Close()
+	//测试代码
+	v := reflect.ValueOf(v1.Add)
+	paramList :=[]reflect.Value{reflect.ValueOf(10), reflect.ValueOf(20)}
+	retList := v.Call(paramList)
+	fmt.Println(retList[0].Int())
+	//
 	core.RunWindowsServer()
 
 }

@@ -3,6 +3,7 @@ module gin-vue-admin
 go 1.12
 
 require (
+	github.com/EDDYCJY/go-gin-example v0.0.0-20200505102242-63963976dee0
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
 	github.com/casbin/casbin v1.9.1
 	github.com/casbin/gorm-adapter v1.0.0
@@ -25,15 +26,16 @@ require (
 	github.com/lestrrat/go-strftime v0.0.0-20180220042222-ba3bf9c1d042 // indirect
 	github.com/lib/pq v1.3.0 // indirect
 	github.com/mailru/easyjson v0.7.1 // indirect
-	github.com/martin-helmich/kubernetes-crd-example v0.0.0-20200430145357-285d5204a934
 	github.com/mitchellh/mapstructure v1.2.2 // indirect
 	github.com/mojocn/base64Captcha v1.3.1
 	github.com/op/go-logging v0.0.0-20160315200505-970db520ece7
+	github.com/ouqiang/gocron v1.5.3 // indirect
 	github.com/pelletier/go-toml v1.6.0 // indirect
 	github.com/piexlmax/gvaplug v0.0.8
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/qiniu/api.v7/v7 v7.4.1
-	github.com/robfig/cron/v3 v3.0.1 // indirect
+	github.com/robfig/cron v1.2.0
+	github.com/robfig/cron/v3 v3.0.1
 	github.com/satori/go.uuid v1.2.0
 	github.com/spf13/cast v1.3.1 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect

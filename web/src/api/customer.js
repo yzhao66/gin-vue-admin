@@ -117,3 +117,10 @@ export const getDeviceDetails = () => {
         method: 'post',
     })
 }
+export const getCronLists = () => {
+    // eslint-disable-next-line no-
+    return service({
+        url: "/device/getCronList",
+        method: 'post',
+    })
+}
